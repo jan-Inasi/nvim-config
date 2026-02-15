@@ -1,10 +1,22 @@
 local utils = require("utils")
+local map = utils.map
 
 local function tmap(mode, input, t_cmd, desc, opts)
     local cmd = '<cmd>Telescope ' .. t_cmd .. '<CR>'
-    utils.map(mode, input, cmd, desc, opts)
+    map(mode, input, cmd, desc, opts)
 end
 
+
+local function wrap_git(fn) 
+    return function()
+        local git_available, info = utils.git_available()
+        if git_available then
+            fn()
+        else
+            vim.notify(info, vim.log.levels.WARN)
+        end
+    end
+end
 
 return {
     'nvim-telescope/telescope.nvim',
@@ -16,10 +28,12 @@ return {
         tmap('n', '<leader>fo', 'oldfiles', 'telescope old files')
         tmap('n', '<leader>fm', 'marks', 'telescope marks')
 
-        tmap('n', '<leader>gc', 'git_commits', 'git commits')
-        tmap('n', '<leader>gb', 'git_branches', 'git branches')
-        tmap('n', '<leader>gs', 'git_status', 'git status')
-        tmap('n', '<leader>gt', 'git_stash', 'git stash')
+        local tbi = require("telescope.builtin")
+
+        map('n', '<leader>gc', wrap_git(tbi.git_commits), 'git commits')
+        map('n', '<leader>gb', wrap_git(tbi.git_branches), 'git branches')
+        map('n', '<leader>gs', wrap_git(tbi.git_status), 'git status')
+        map('n', '<leader>gt', wrap_git(tbi.git_stash), 'git stash')
     end
 }
 
