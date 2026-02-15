@@ -15,6 +15,11 @@ return {
         tmap('n', '<leader>fb', 'buffers', 'telescope buffers')
         tmap('n', '<leader>fo', 'oldfiles', 'telescope old files')
         tmap('n', '<leader>fm', 'marks', 'telescope marks')
+
+        tmap('n', '<leader>gc', 'git_commits', 'git commits')
+        tmap('n', '<leader>gb', 'git_branches', 'git branches')
+        tmap('n', '<leader>gs', 'git_status', 'git status')
+        tmap('n', '<leader>gt', 'git_stash', 'git stash')
     end
 }
 
